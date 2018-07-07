@@ -20,8 +20,8 @@ class TodoForm extends React.Component{
 	}
 	render() {
 		return(
-			<form onSubmit={this.handleFormSubmit}>
-				<input type="text" placeholder = "Add TodoItem" ref={this.handleRefInputEvt}/>
+			<form className="form-group" onSubmit={this.handleFormSubmit}>
+				<input type="text" className="form-control" placeholder = "Add TodoItem" ref={this.handleRefInputEvt}/>
 			</form>
 		);
 	}
