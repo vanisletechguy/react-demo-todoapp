@@ -1,6 +1,7 @@
 var React = require('react');
 var TodoForm = require('./TodoForm');
 var TodoList = require('./TodoList');
+var TodosCount = require('./TodosCount');
 
 class Todo extends React.Component {
 	constructor(props) {
@@ -10,7 +11,7 @@ class Todo extends React.Component {
 		};
 		
 		this.handleNewTodoItem = this.handleNewTodoItem.bind(this);
-		this.handeDeleteBtnClick = this.handleDeleteBtnClick.bind(this);
+		this.handleDeleteBtnClick = this.handleDeleteBtnClick.bind(this);
 	}
 	handleNewTodoItem(todo) {
 		this.setState(function(prevState) {
@@ -21,14 +22,27 @@ class Todo extends React.Component {
 			};
 		});
 	}
-	handleDeleteBtnClick(index){
-		console.log('Index: ', index);		
+	handleDeleteBtnClick(evt) {
+		var index = Number(evt.target.value);
+		this.setState(function(prevState) {
+			var todos = prevState.todos;
+			todos = todos.slice(0, index).concat(todos.slice(index+1));
+
+			return {
+				todos: todos
+			};
+		});
 	}
 	render() {
+		var todos = this.state.todos;
 		return(
 			<div>
 				<TodoForm onNewTodoItem={this.handleNewTodoItem} />
-				<TodoList todos={this.state.todos} onDeleteBtnClick={this.handleDeleteBtnClick}/>
+				<TodoList 
+					todos={todos} 
+					onDeleteBtnClick={this.handleDeleteBtnClick}
+				/>
+				<TodosCount todosCount={todos.length} />
 			</div>
 		);
 	}
