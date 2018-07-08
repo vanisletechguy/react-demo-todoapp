@@ -20,18 +20,34 @@ var Link = function(props) {
 			style={linkStyle}
 			onClick={function(evt) {props.onFilterChange(evt, filterName);}}
 		>
-			<strong>{filterName}</strong>
+			<strong>{props.children}</strong>
 		</a>
 	);
-
 };
 var FilterLinks = function(props) {
 	return(
 		<div style={{marginBottom: '30px'}}>
 			{'Display: '}
-			<Link currentFilter={props.currentFilter} filterName={ALL} onFilterChange={props.onFilterChange}/>
-			<Link currentFilter={props.currentFilter} filterName={ACTIVE} onFilterChange={props.onFilterChange}/>
-			<Link currentFilter={props.currentFilter} filterName={COMPLETED} onFilterChange={props.onFilterChange}/>
+			<Link 
+				currentFilter={props.currentFilter} 
+				filterName={ALL} 
+				onFilterChange={props.onFilterChange}
+			>
+				{ALL}
+			</Link>
+			<Link currentFilter={props.currentFilter} 
+				filterName={ACTIVE} 
+				onFilterChange={props.onFilterChange}
+			>
+				{ACTIVE}
+			</Link>
+			<Link 
+				currentFilter={props.currentFilter} 
+				filterName={COMPLETED} 
+				onFilterChange={props.onFilterChange}
+			>
+				{COMPLETED}
+			</Link>
 		</div>	
 	);
 };

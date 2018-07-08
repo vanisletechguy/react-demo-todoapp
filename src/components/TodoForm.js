@@ -3,9 +3,6 @@ var React = require('react');
 class TodoForm extends React.Component{
 	constructor(props) {
 		super(props);
-		this.state= {
-			todoText: ''
-		};
 		this.handleFormSubmit = this.handleFormSubmit.bind(this);
 		this.handleRefInputEvt = this.handleRefInputEvt.bind(this);
 		this.handleInputTextChangeEvt = this.handleInputTextChangeEvt.bind(this);
@@ -13,22 +10,12 @@ class TodoForm extends React.Component{
 
 	handleFormSubmit(evt) {
 		evt.preventDefault();
-		this.props.onNewTodoItem(this.state.todoText);
-		//	this.inputRef.value = '';
-		this.setState(function() {
-			return {
-				todoText: ''
-			};
-		});
+		this.props.onNewTodoItem();
 	}
 
 	handleInputTextChangeEvt(evt) {
 		var todoText = evt.target.value;
-		this.setState(function() {
-			return {
-				todoText: todoText
-			};
-		});
+		this.props.onTodoSearch(todoText);
 	}
 	handleRefInputEvt(inputRef){
 		inputRef.focus();
@@ -39,9 +26,9 @@ class TodoForm extends React.Component{
 				<input 
 					type="text" 
 					className="form-control" 
-					placeholder = "Add TodoItem" 
+					placeholder = "Type to search or enter to add an item" 
 					ref={this.handleRefInputEvt}
-					value={this.state.todoText}
+					value={this.props.todoText}
 					onChange={this.handleInputTextChangeEvt}
 				/>
 			</form>

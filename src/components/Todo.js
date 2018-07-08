@@ -12,6 +12,7 @@ class Todo extends React.Component {
 	constructor(props) {
 		super(props);
 		this.state = {
+			searchTerm: '',
 			currentFilter: ALL,
 			todos: []
 		};
@@ -20,18 +21,20 @@ class Todo extends React.Component {
 		this.handleDeleteBtnClick = this.handleDeleteBtnClick.bind(this);
 		this.handleCheckboxClick = this.handleCheckboxClick.bind(this);
 		this.handleFilterChange = this.handleFilterChange.bind(this);
+		this.handleTodoSearch = this.handleTodoSearch.bind(this);
 	}
-	handleNewTodoItem(todo) {
+	handleNewTodoItem() {
 		this.setState(function(prevState) {
 			var todoItem = {
-				todo: todo,
+				todo: prevState.searchTerm,
 				id: Date.now().toString(),
 				completed: false
 			};
 			var todos = prevState.todos.concat(todoItem);
 
 			return {
-				todos: todos
+				todos: todos,
+				searchTerm: ''
 			};
 		});
 	}
@@ -79,11 +82,16 @@ class Todo extends React.Component {
 	}
 	handleFilterChange(evt, currentFilter) {
 		evt.preventDefault();
-		console.log(currentFilter);
-
 		this.setState(function() {
 			return {
 				currentFilter: currentFilter
+			};
+		});
+	}
+	handleTodoSearch(searchTerm) {
+		this.setState(function() {
+			return {
+				searchTerm: searchTerm
 			};
 		});
 	}
@@ -91,8 +99,13 @@ class Todo extends React.Component {
 		var todos =this.state.todos;
 		var currentFilter = this.state.currentFilter;
 		var filteredTodos = [];
+		var searchTerm = this.state.searchTerm;
+
 		for (var i=0; i < todos.length; ++i) {
 			var todoItem = todos[i];
+			if(todoItem.todo.indexOf(searchTerm) === -1) {
+				continue;
+			}
 			if (currentFilter === COMPLETED && !todoItem.completed) {
 				continue;
 			}
@@ -107,7 +120,11 @@ class Todo extends React.Component {
 		var todos = this.filterTodos();
 		return(
 			<div>
-				<TodoForm onNewTodoItem={this.handleNewTodoItem} />
+				<TodoForm 
+					todoText={this.state.searchTerm}
+					onNewTodoItem={this.handleNewTodoItem} 
+					onTodoSearch={this.handleTodoSearch}
+				/>
 				<FilterLinks 
 					currentFilter={this.state.currentFilter} 
 					onFilterChange={this.handleFilterChange} 
