@@ -1,14 +1,22 @@
 var React = require('react');
 
-var Todoitem = function(props) {
+
+var TodoItem = function(props) {
 	return(
 		<li className="list-group-item">
 			<h3>
+				<input 
+					className="pull-left" 
+					type="checkbox" 
+					checked={props.completed}
+					value={props.id}
+					onChange={props.onCheckboxClick}
+				/>
 				{props.todo}
 				<button 
 					className="btn btn-default btn-danger pull-right"
 					onClick={props.onDeleteBtnClick}
-					onValue={props.index}
+					value={props.id}
 				>
 					Delete
 				</button>	
@@ -17,4 +25,5 @@ var Todoitem = function(props) {
 	);
 };
 
-module.exports = Todoitem;
+
+module.exports = TodoItem;

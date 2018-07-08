@@ -12,10 +12,16 @@ class Todo extends React.Component {
 		
 		this.handleNewTodoItem = this.handleNewTodoItem.bind(this);
 		this.handleDeleteBtnClick = this.handleDeleteBtnClick.bind(this);
+		this.handleCheckboxClick = this.handleCheckboxClick.bind(this);
 	}
 	handleNewTodoItem(todo) {
 		this.setState(function(prevState) {
-			var todos = prevState.todos.concat(todo);
+			var todoItem = {
+				todo: todo,
+				id: Date.now().toString(),
+				completed: false
+			};
+			var todos = prevState.todos.concat(todoItem);
 
 			return {
 				todos: todos
@@ -23,11 +29,42 @@ class Todo extends React.Component {
 		});
 	}
 	handleDeleteBtnClick(evt) {
-		var index = Number(evt.target.value);
+		var id = evt.target.value;
 		this.setState(function(prevState) {
 			var todos = prevState.todos;
+			var index = null;
+			for(var i=0; i<todos.length; ++i) {
+				if(todos[i].id === id) {
+					index = i;
+					break;
+				}
+			}
 			todos = todos.slice(0, index).concat(todos.slice(index+1));
-
+			return {
+				todos: todos
+			};
+		});
+	}
+	handleCheckboxClick(evt) {
+		var id = evt.target.value;
+		this.setState(function(prevState) {
+			var todos = prevState.todos;
+			var index = null;
+			for(var i=0; i<todos.length; ++i) {
+				if(todos[i].id === id) {
+					index = i;
+					break;
+				}
+			}
+			todos = (
+				todos.slice(0, index)
+					.concat([{
+						todo: todos[index].todo,
+						id: todos[index].id,
+						completed: !todos[index].completed
+					}])
+					.concat(todos.slice(index+1))
+			);
 			return {
 				todos: todos
 			};
@@ -41,6 +78,7 @@ class Todo extends React.Component {
 				<TodoList 
 					todos={todos} 
 					onDeleteBtnClick={this.handleDeleteBtnClick}
+					onCheckboxClick={this.handleCheckboxClick}
 				/>
 				<TodosCount todosCount={todos.length} />
 			</div>
